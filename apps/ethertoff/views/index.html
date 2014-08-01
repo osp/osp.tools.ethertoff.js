@@ -1,0 +1,52 @@
+<import: src='./write'>
+<import: src='./read'>
+
+<Head:>
+    <view name="d-codemirror:includes" static='/cm'></view>
+    <view name="d-showdown:includes" static='/showdown'></view>
+
+<Title:>
+  {{_page.title}}
+
+<Body:>
+    <div class="wrap screen-only" style="min-height: 15%;">
+        <view name="header"/>
+    </div>
+    <div class="wrap" style="height: 85%;">
+        <div class="left-side screen-only">
+            <view name="nav"/>
+        </div>
+        <div id="content" class="middle cover ">
+            <view name="{{$render.ns}}"/>
+        </div>
+        <div class="right-side screen-only">
+             <h2>The right side</h2>
+
+            <p>Space for more things</p>
+        </div>
+    </div>
+
+<header:>
+        <div class="left-side screen-only">
+             <h1><a href="/">Ethertoff.js</a></h1>
+        </div>
+        <div class="middle">
+            <h1 class="inline"></h1>
+            <div id="switch"> <a class="button {{if _page.readMode }}active{{/if}}" href="/r/{{ _page.slug }}">Read</a>
+                <a class="button {{if _page.writeMode }}active{{/if}}" href="/w/{{ _page.slug }}">Write</a> <a class="button" href="index.html#" onclick="window.print()">Print</a>
+            </div>
+        </div>
+        <div class="right-side">
+            <ul id="account-buttons">
+                <li><a class="button" href="/accounts/login">Log in</a></li>
+            </ul>
+        </div>
+
+<nav:>
+    <nav>
+        <dl>
+            {{each _page.allTexts as #text}}
+            <dd><a href="/{{if _page.readMode }}r{{/if}}{{if _page.writeMode }}w{{/if}}/{{#text.id}}">{{#text.id}}</a></dd>
+            {{/each}}
+        </dl>
+    </nav>

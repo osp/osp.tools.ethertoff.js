@@ -30,8 +30,8 @@ app.get('/', function(page, model){
     });
 });
 
-app.get('/r/:slug', function(page, model, _arg, next){
-    var slug = _arg.slug;
+app.get(/^\/r\/(.*)/, function(page, model, params, next){
+    var slug = params[0];
     var text = model.query('documents', {'_id' : slug});
         
     text.subscribe(function(err) {
@@ -49,8 +49,8 @@ app.get('/r/:slug', function(page, model, _arg, next){
     });
 });
 
-app.get('/w/:slug', function(page, model, _arg, next){
-    var slug = _arg.slug;
+app.get(/^\/w\/(.*)/, function(page, model, params, next){
+    var slug = params[0];
     var text = model.query('documents', {'_id' : slug});
     text.subscribe(function(err) {
         if (err) return next(err); // this throws a 500

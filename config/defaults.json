@@ -2,6 +2,7 @@
   "NODE_ENV": "development",
   "PORT": 3000,
   "MONGO_URL": "mongodb://localhost:27017/ethertoff",
+  "COLLECTION_NAME": "documents",
   "SESSION_SECRET": "c3a817f7196b0270a0f9d789d296ece998091c51",
   "SESSION_COOKIE": "e28a23612c4a32a5808e02b219b3ba76346eb411"
 }

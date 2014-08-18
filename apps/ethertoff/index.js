@@ -32,8 +32,8 @@ app.get('/', function(page, model){
 
 app.get('/r/:slug', function(page, model, _arg, next){
     var slug = _arg.slug;
-    var text = model.at('documents.' + slug);
-    
+    var text = model.query('documents', {'_id' : slug});
+        
     text.subscribe(function(err) {
         if (err) return next(err);
         var allTexts = model.query('documents', {});
@@ -41,7 +41,8 @@ app.get('/r/:slug', function(page, model, _arg, next){
             if (err) return next(err);
             model.set('_page.slug', slug);
             model.set('_page.readMode', true);
-            model.ref('_page.text', text);
+            model.ref('_page.texts', text);
+            model.ref('_page.text', '_page.texts.0');
             allTexts.ref('_page.allTexts');
             page.render("read");
         });
@@ -50,12 +51,12 @@ app.get('/r/:slug', function(page, model, _arg, next){
 
 app.get('/w/:slug', function(page, model, _arg, next){
     var slug = _arg.slug;
-    var text = model.at('documents.' + slug);
+    var text = model.query('documents', {'_id' : slug});
     text.subscribe(function(err) {
         if (err) return next(err); // this throws a 500
-        if (!text.get()) {
+        if (text.get().length === 0) {
             // Create a new document
-            model.set('documents.' + slug, { text: "Foo Foo Foo", path: slug });
+            model.add('documents', { id: slug, text: "Foo Foo Foo", path: slug });
         }
         var allTexts = model.query('documents', {});
         allTexts.subscribe(function(err) {
@@ -63,7 +64,8 @@ app.get('/w/:slug', function(page, model, _arg, next){
             console.log(allTexts.get());
             model.set('_page.slug', slug);
             model.set('_page.writeMode', true);
-            model.ref('_page.text', text);
+            model.ref('_page.texts', text);
+            model.ref('_page.text', '_page.texts.0');
             allTexts.ref('_page.allTexts');
             page.render("write"); 
         });

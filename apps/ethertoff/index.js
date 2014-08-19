@@ -1,4 +1,7 @@
 var derby = require('derby');
+// because the mime lookup function is also used within the client-side, we use
+// a module that is compatible with browserify:
+var mime = require('../../node_modules/express/node_modules/accepts/node_modules/mime-types');
 
 var app = module.exports = derby.createApp('app', __filename);
 
@@ -56,7 +59,13 @@ app.get(/^\/w\/(.*)/, function(page, model, params, next){
         if (err) return next(err); // this throws a 500
         if (text.get().length === 0) {
             // Create a new document
-            model.add('documents', { id: slug, text: "Foo Foo Foo", path: slug });
+            model.add('documents', {
+                id : slug,
+                path : slug,
+                text : "Foo Foo Foo",
+                mime : mime.lookup(slug) || 'text/plain',
+                binary : false // this is not necessary true; if a user creates foo.png, what should happen?
+            })
         }
         var allTexts = model.query('documents', {});
         allTexts.subscribe(function(err) {

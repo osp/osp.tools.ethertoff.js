@@ -1,4 +1,12 @@
 <index:>
-    <view name="d-showdown" text="{{_page.text.text}}" html="{{_page.markdown}}" options="{{ {} }}"></view>
-    <div as="md"></div>
-    {{markdown(_page.markdown)}}
+    {{if !_page.text.binary }}
+        {{if _page.text.mime === 'text/x-markdown'}}
+            <view name="d-showdown" text="{{_page.text.text}}" html="{{_page.markdown}}" options="{{ {} }}"></view>
+            <div as="md"></div>
+            {{markdown(_page.markdown)}}
+        {{else}}
+            <pre>{{_page.text.text}}</pre>
+        {{/if}}
+    {{else}}
+    BINARY
+    {{/if}}

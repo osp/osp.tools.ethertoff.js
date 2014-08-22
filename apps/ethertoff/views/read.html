@@ -8,5 +8,9 @@
             <pre>{{_page.text.text}}</pre>
         {{/if}}
     {{else}}
-    BINARY
+        {{if _page.text.mime === 'image/jpeg' || _page.text.mime === 'image/png' || _page.text.mime === 'image/gif' }}
+        <img src="/raw/{{ _page.slug }}" />
+        {{else}}
+        Download binary file: <a href="/raw/{{ _page.slug }}">{{ _page.slug }}</a>
+        {{/if}}
     {{/if}}

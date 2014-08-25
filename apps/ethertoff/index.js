@@ -15,18 +15,28 @@ app.component(require('d-codemirror'));
 app.component(require('d-showdown'));
 
 app.get('/', function(page, model){
-    var slug = 'start';
+    // try to find a document that can resemble the home-page
+    var text = model.query('documents', {'_id': { $regex: '^readme*|^index*', $options: 'i' } });
     
-    
-    var text = model.at('documents.' + slug);
     text.subscribe(function(err) {
         if (err) return next(err);
+        console.log(text.get());
+        if (text.get().length === 0) {
+            model.set('_page.text', {
+                path : '',
+                text : "You can set a home page by creating a page called index.txt, index.html, index.md, readme.md, readme.html, readme.txt…",
+                mime : 'text/plain',
+                binary : false
+            })
+        } else {
+            model.ref('_page.texts', text);
+            model.ref('_page.text', '_page.texts.0');
+        }
         var allTexts = model.query('documents', {});
         allTexts.subscribe(function(err) {
             if (err) return next(err);
-            model.set('_page.slug', slug);
+            model.set('_page.slug', '');
             model.set('_page.readMode', true);
-            model.ref('_page.text', text);
             allTexts.ref('_page.allTexts');
             page.render("read");
         });

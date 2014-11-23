@@ -27,7 +27,7 @@ app.get('/', function(page, model){
                 text : "You can set a home page by creating a page called index.txt, index.html, index.md, readme.md, readme.html, readme.txt…",
                 mime : 'text/plain',
                 binary : false
-            })
+            });
         } else {
             model.ref('_page.texts', text);
             model.ref('_page.text', '_page.texts.0');
@@ -35,7 +35,7 @@ app.get('/', function(page, model){
         var allTexts = model.query('documents', {});
         allTexts.subscribe(function(err) {
             if (err) return next(err);
-            model.set('_page.slug', '');
+            model.set('_page.slug', text.get()[0].path);
             model.set('_page.readMode', true);
             allTexts.ref('_page.allTexts');
             page.render("read");
@@ -75,7 +75,7 @@ app.get(/^\/w\/(.*)/, function(page, model, params, next){
                 text : "Foo Foo Foo",
                 mime : mime.lookup(slug) || 'text/plain',
                 binary : false // this is not necessary true; if a user creates foo.png, what should happen?
-            })
+            });
         }
         var allTexts = model.query('documents', {});
         allTexts.subscribe(function(err) {
@@ -94,4 +94,4 @@ app.get(/^\/w\/(.*)/, function(page, model, params, next){
 app.proto.markdown = function(html) {
   if(!this.md) return;
   this.md.innerHTML = html;
-}
+};

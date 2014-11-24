@@ -25,8 +25,23 @@ router.get(/^\/raw\/(.*)/, function(req, res, next){
         } else {
             next();
         }
-        console.log(slug);
-    })
+    });
+});
+
+router.get('/style.css', function(req, res, next){
+    
+    var model = req.getModel();
+    var c = model.query('documents', {'_id' : 'style.css'});
+    c.fetch(function(err) {
+        var r = c.get();
+        if (r.length > 0) {
+            var doc = r[0];
+                res.set('Content-Type', doc.mime);
+                res.send(doc.text);
+        } else {
+            next();
+        }
+    });
 });
 
 module.exports = router;

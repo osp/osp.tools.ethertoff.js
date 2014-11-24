@@ -81,6 +81,10 @@ In the terminal, navigate to the folder in which the ethertoff.js files are loca
 
 This will attempt to install all depencies.
 
+You can load the example content (recommended) into the database:
+
+    node init.js
+
 You should now be able to start ethertoff with the following command:
 
     npm start

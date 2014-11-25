@@ -14,7 +14,7 @@ app.loadStyles(__dirname + '/styles');
 app.component(require('d-codemirror'));
 app.component(require('d-showdown'));
 
-app.get('/', function(page, model){
+app.get('/', function(page, model, params, next){
     var slug;
     // try to find a document that can resemble the home-page
     var text = model.query('documents', {'_id': { $regex: '^readme*|^index*', $options: 'i' } });

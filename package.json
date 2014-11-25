@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "derby": "0.6.0-alpha23",
+    "derby": "0.6.0-alpha28",
     "racer-highway": "~1.3.0",
     "livedb-mongo": "^0.3",
     "racer-bundle": "^0.1",

@@ -24,7 +24,10 @@
     "compression": "^1.0",
     "serve-favicon": "^2.0",
     "d-codemirror": "~0.1.0",
-    "d-showdown": "~0.1.0"
+    "d-showdown": "~0.1.0",
+    "dive": "~0.3.0",
+    "mmmagic": "~0.3.8",
+    "istextorbinary": "^1.0.0"
   },
   "author": {
     "name": "Eric Schrijver",

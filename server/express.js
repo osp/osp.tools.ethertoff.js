@@ -47,7 +47,7 @@ module.exports = function (store, apps, error, cb){
     .use(error);
 
   cb(expressApp, handlers.upgrade);
-}
+};
 
 function createUserId(req, res, next) {
   var model = req.getModel();

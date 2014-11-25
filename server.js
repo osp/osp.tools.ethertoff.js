@@ -16,6 +16,11 @@ var publicDir = process.cwd() + '/public';
 
 var defaults = require('./config/defaults');
 
+if(process.env.VCAP_SERVICES){
+    var appfog_defaults = require('./config/appfog');
+    defaults = appfog_defaults.defaults;
+}
+
 for(var key in defaults) {
   process.env[key] = process.env[key] || defaults[key];
 }

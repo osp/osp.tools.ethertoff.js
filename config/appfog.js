@@ -16,11 +16,5 @@ var generate_mongo_url = function(obj){
 
 var mongourl = generate_mongo_url(mongo);
 
-exports.defaults = {
-  "NODE_ENV": "production",
-  "PORT": process.env.VCAP_APP_PORT || 3000,
-  "MONGO_URL": generate_mongo_url(mongo),
-  "COLLECTION_NAME": "documents",
-  "SESSION_SECRET": "c3a817f7196b0270a0f9d789d296ece998091c51",
-  "SESSION_COOKIE": "e28a23612c4a32a5808e02b219b3ba76346eb411"
-};
+exports.PORT = process.env.VCAP_APP_PORT;
+exports.MONGO_URL = generate_mongo_url(mongo);

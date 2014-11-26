@@ -1,7 +1,7 @@
 {
   "name": "ethertoff",
   "version": "0.0.0",
-  "description": "",
+  "description": "Simple wiki featuring realtime editing, outputs with equal love to print and web.",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
@@ -33,7 +33,10 @@
     "name": "Eric Schrijver",
     "email": "eric@ericschrijver.nl"
   },
-  "license": "",
-  "readme": "ethertoff\n",
-  "readmeFilename": "README.txt"
+  "license": "AGPLv3",
+  "readmeFilename": "README.txt",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/osp/osp.tools.ethertoff.js.git"
+  }
 }

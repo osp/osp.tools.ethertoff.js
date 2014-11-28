@@ -14,28 +14,30 @@ app.loadStyles(__dirname + '/styles');
 app.component(require('d-codemirror'));
 app.component(require('d-showdown'));
 
-app.get('/', function(page, model){
+app.get('/', function(page, model, params, next){
+    var slug;
     // try to find a document that can resemble the home-page
     var text = model.query('documents', {'_id': { $regex: '^readme*|^index*', $options: 'i' } });
     
     text.subscribe(function(err) {
         if (err) return next(err);
-        console.log(text.get());
+        //console.log(text.get());
         if (text.get().length === 0) {
             model.set('_page.text', {
-                path : '',
-                text : "You can set a home page by creating a page called index.txt, index.html, index.md, readme.md, readme.html, readme.txt…",
-                mime : 'text/plain',
+                path : 'index.html',
+                text : '<p>You can set a home page by creating a page called <a href="../w/index.html">index.html</a>, <a href="../w/index.md">index.md, <a href="../w/index.txt">index.txt</a>, <a href="../w/readme.html">readme.html</a>, <a href="../w/readme.md">readme.md</a>, <a href="../w/readme.txt">readme.txt…</a></p>',
+                mime : 'text/html',
                 binary : false
-            })
+            });
         } else {
+            slug = text.get()[0].path;
             model.ref('_page.texts', text);
             model.ref('_page.text', '_page.texts.0');
         }
         var allTexts = model.query('documents', {});
         allTexts.subscribe(function(err) {
             if (err) return next(err);
-            model.set('_page.slug', '');
+            model.set('_page.slug', slug);
             model.set('_page.readMode', true);
             allTexts.ref('_page.allTexts');
             page.render("read");
@@ -75,12 +77,12 @@ app.get(/^\/w\/(.*)/, function(page, model, params, next){
                 text : "Foo Foo Foo",
                 mime : mime.lookup(slug) || 'text/plain',
                 binary : false // this is not necessary true; if a user creates foo.png, what should happen?
-            })
+            });
         }
         var allTexts = model.query('documents', {});
         allTexts.subscribe(function(err) {
             if (err) return next(err);
-            console.log(allTexts.get());
+            //console.log(allTexts.get());
             model.set('_page.slug', slug);
             model.set('_page.writeMode', true);
             model.ref('_page.texts', text);
@@ -94,4 +96,4 @@ app.get(/^\/w\/(.*)/, function(page, model, params, next){
 app.proto.markdown = function(html) {
   if(!this.md) return;
   this.md.innerHTML = html;
-}
+};

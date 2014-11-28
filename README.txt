@@ -24,11 +24,11 @@ This first version of Ethertoff.js provides a bare-bones wiki experience.
 
 A pad is created by typing a link to a non-existing page in the url-bar:
 
-http://localhost:3000/w/name_of_new_pad
+http://localhost:3000/w/name_of_new_pad.html
 
 a read-only version of the pad is then available at:
 
-http://localhost:3000/r/name_of_new_pad
+http://localhost:3000/r/name_of_new_pad.html
 
 One can see the page get updated in real-time.
 
@@ -36,17 +36,14 @@ Road-map
 --------
 
 For now the write interfaces is a bare-bones text editor (codemirror, with no
-additional options or themes). The read interface interprets the text as
-markdown, so that markdown syntax is rendered as html. The idea is that the
-wiki can handle multiple kinds of resources, and that dependent on the
-mime-type of the resource the wiki offers a different kind of edit and read
-view.
+additional options or themes). The read interface can interpret the text as
+markdown, or as raw html. 
 
-The easiest way to to recognise a mime-type is using file extension: so a page
-called documentation.md might be interpreted as markdown, whereas
-documentation.html might be recognised as html. In the latter case, the read
-view will render the code as is (without markdown interpretation), and the
-write view will offer syntax highlighting for html.
+The idea is that the wiki can handle multiple kinds of resources, and that
+dependent on the mime-type of the resource the wiki offers a different kind
+of edit and read view. The easiest way to to recognise a mime-type is using
+file extension: so a page called documentation.md will be interpreted as
+markdown, whereas documentation.html will be recognised as plain html.
 
 To take the file-paradigm further, integration might be offered with the
 file-system or git repositories. An inconvenience to Etherpad-like realtime
@@ -76,7 +73,7 @@ the Free Software Foundation, either version 3 of the License, or
 Installation
 ------------
 
-Download and install node.js
+Download and install node.js and mongodb
 
 In the terminal, navigate to the folder in which the ethertoff.js files are located. Run:
 
@@ -87,6 +84,9 @@ This will attempt to install all depencies.
 Create the directory public/derby:
     mkdir -p public/derby
 
+You can load the example content (recommended) into the database:
+
+    node init.js
 
 You should now be able to start ethertoff with the following command:
 

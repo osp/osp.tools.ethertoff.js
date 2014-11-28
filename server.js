@@ -16,6 +16,17 @@ var publicDir = process.cwd() + '/public';
 
 var defaults = require('./config/defaults');
 
+if(process.env.VCAP_SERVICES){ // appfog
+    var appfog_defaults = require('./config/appfog');
+    defaults.PORT = appfog_defaults.PORT;
+    defaults.MONGO_URL = appfog_defaults.MONGO_URL;
+}
+
+if(process.env.MONGOSOUP_URL){ // heroku with mongosoup
+    process.env.MONGO_URL = process.env.MONGOSOUP_URL;
+}
+
+
 for(var key in defaults) {
   process.env[key] = process.env[key] || defaults[key];
 }

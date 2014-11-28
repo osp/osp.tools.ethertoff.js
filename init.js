@@ -46,7 +46,8 @@ var fs = require('fs');
 var sys = require('sys');
 
 // Parse command line options
-if (process.argv.length <= 2) {
+if (process.argv.length > 3) {
+    console.log("Too many arguments");
     console.log("Usage: node init.js path_to_folder_to_use_as_wiki_content");
     process.exit(1);
 }
@@ -63,7 +64,10 @@ var db = require('livedb-mongo')(process.env.MONGO_URL + '?auto_reconnect', {saf
 var backend = livedb.client(db);
 
 // initialise other vars
-var folder = process.argv[2] || process.cwd();
+// if no folder is specified, we load the example content
+var folder = process.argv.length === 3 ? process.argv[2] : 'example_content';
+// TODO: create a separate script that initialises Ethertoff with process.cwd() as folder
+
 var toDo = 0;
 
 // this function we are going to need to insert documents
@@ -77,17 +81,17 @@ var insertDoc = function(doc) {
         }, function(err, version, transformedByOps, snapshot) {
             toDo -= 1;
             if (toDo === 0) db.close();
-        });        
-    }
+        });
+    };
     if (doc.binary) {
         submit(doc);
     } else {
         fs.readFile(doc.absPath, "utf-8", function(err, contents) {
             doc.text = contents;
             submit(doc);
-        })
+        });
     }
-}
+};
 
 // First drop the existing collection, then go!
 db.mongo.dropCollection(process.env.COLLECTION_NAME, function(err, reply) {

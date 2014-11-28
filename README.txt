@@ -84,6 +84,10 @@ In the terminal, navigate to the folder in which the ethertoff.js files are loca
 
 This will attempt to install all depencies.
 
+Create the directory public/derby:
+    mkdir -p public/derby
+
+
 You should now be able to start ethertoff with the following command:
 
     npm start

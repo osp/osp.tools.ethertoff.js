@@ -17,29 +17,28 @@ app.component(require('d-showdown'));
 app.get('/', function(page, model, params, next){
     var slug;
     // try to find a document that can resemble the home-page
-    var text = model.query('documents', {'_id': { $regex: '^readme*|^index*', $options: 'i' } });
-    
-    text.subscribe(function(err) {
+    var requestedDocument = model.query('documents', {'_id': { $regex: '^readme*|^index*', $options: 'i' } });
+
+    requestedDocument.subscribe(function(err) {
         if (err) return next(err);
-        //console.log(text.get());
         if (text.get().length === 0) {
-            model.set('_page.text', {
+            model.set('_page.document', {
                 path : 'index.html',
                 text : '<p>You can set a home page by creating a page called <a href="../w/index.html">index.html</a>, <a href="../w/index.md">index.md, <a href="../w/index.txt">index.txt</a>, <a href="../w/readme.html">readme.html</a>, <a href="../w/readme.md">readme.md</a>, <a href="../w/readme.txt">readme.txt…</a></p>',
                 mime : 'text/html',
                 binary : false
             });
         } else {
-            slug = text.get()[0].path;
-            model.ref('_page.texts', text);
-            model.ref('_page.text', '_page.texts.0');
+            slug = requestedDocument.get()[0].path;
+            model.ref('_page.documents', requestedDocument);  // requestedDocument is actually an array of one,
+            model.ref('_page.document', '_page.documents.0'); // so these two lines make us able to reference the actual document in the view  (thanks https://groups.google.com/d/msg/derbyjs/2eyBuDYCBw4/Ht8-Mr-Z7lwJ Artur Zayats )
         }
-        var allTexts = model.query('documents', {});
-        allTexts.subscribe(function(err) {
+        var allDocuments = model.query('documents', {});
+        allDocuments.subscribe(function(err) {
             if (err) return next(err);
             model.set('_page.slug', slug);
             model.set('_page.readMode', true);
-            allTexts.ref('_page.allTexts');
+            allDocuments.ref('_page.allDocuments');
             page.render("read");
         });
     });
@@ -47,18 +46,18 @@ app.get('/', function(page, model, params, next){
 
 app.get(/^\/r\/(.*)/, function(page, model, params, next){
     var slug = params[0];
-    var text = model.query('documents', {'_id' : slug});
-        
-    text.subscribe(function(err) {
+    var requestedDocument = model.query('documents', {'_id' : slug});
+
+    requestedDocument.subscribe(function(err) {
         if (err) return next(err);
-        var allTexts = model.query('documents', {});
-        allTexts.subscribe(function(err) {
+        var allDocuments = model.query('documents', {});
+        allDocuments.subscribe(function(err) {
             if (err) return next(err);
             model.set('_page.slug', slug);
             model.set('_page.readMode', true);
-            model.ref('_page.texts', text);
-            model.ref('_page.text', '_page.texts.0');
-            allTexts.ref('_page.allTexts');
+            model.ref('_page.documents', requestedDocument);
+            model.ref('_page.document', '_page.documents.0');
+            allDocuments.ref('_page.allDocuments');
             page.render("read");
         });
     });
@@ -66,8 +65,8 @@ app.get(/^\/r\/(.*)/, function(page, model, params, next){
 
 app.get(/^\/w\/(.*)/, function(page, model, params, next){
     var slug = params[0];
-    var text = model.query('documents', {'_id' : slug});
-    text.subscribe(function(err) {
+    var requestedDocument = model.query('documents', {'_id' : slug});
+    requestedDocument.subscribe(function(err) {
         if (err) return next(err); // this throws a 500
         if (text.get().length === 0) {
             // Create a new document
@@ -79,16 +78,16 @@ app.get(/^\/w\/(.*)/, function(page, model, params, next){
                 binary : false // this is not necessary true; if a user creates foo.png, what should happen?
             });
         }
-        var allTexts = model.query('documents', {});
-        allTexts.subscribe(function(err) {
+        var allDocuments = model.query('documents', {});
+        allDocuments.subscribe(function(err) {
             if (err) return next(err);
-            //console.log(allTexts.get());
+            //console.log(allDocuments.get());
             model.set('_page.slug', slug);
             model.set('_page.writeMode', true);
-            model.ref('_page.texts', text);
-            model.ref('_page.text', '_page.texts.0');
-            allTexts.ref('_page.allTexts');
-            page.render("write"); 
+            model.ref('_page.documents', requestedDocument);
+            model.ref('_page.document', '_page.documents.0');
+            allDocuments.ref('_page.allDocuments');
+            page.render("write");
         });
     });
 });

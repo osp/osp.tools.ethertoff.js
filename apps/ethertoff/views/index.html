@@ -46,8 +46,8 @@
 <nav:>
     <nav>
         <dl>
-            {{each _page.allTexts as #text}}
-            <dd><a href="/{{if _page.readMode }}r{{/if}}{{if _page.writeMode }}w{{/if}}/{{#text.id}}">{{#text.id}}</a></dd>
+            {{each _page.allDocuments as #document}}
+            <dd><a href="/{{if _page.readMode }}r{{/if}}{{if _page.writeMode }}w{{/if}}/{{#document.id}}">{{#document.id}}</a></dd>
             {{/each}}
         </dl>
     </nav>

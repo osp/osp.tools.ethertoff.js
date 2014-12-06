@@ -21,9 +21,12 @@
             <view name="{{$render.ns}}"/>
         </div>
         <div class="right-side screen-only">
-             <h2>The right side</h2>
+             <h2>{{ _page.document.path }}</h2>
 
-            <p>Space for more things</p>
+            <dl>
+                <dt>Mime-type</dt>
+                <dd>{{ _page.document.mime }}</dd>
+            </dl>
         </div>
     </div>
 

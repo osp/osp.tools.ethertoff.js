@@ -21,7 +21,7 @@ app.get('/', function(page, model, params, next){
 
     requestedDocument.subscribe(function(err) {
         if (err) return next(err);
-        if (text.get().length === 0) {
+        if (requestedDocument.get().length === 0) {
             model.set('_page.document', {
                 path : 'index.html',
                 text : '<p>You can set a home page by creating a page called <a href="../w/index.html">index.html</a>, <a href="../w/index.md">index.md, <a href="../w/index.txt">index.txt</a>, <a href="../w/readme.html">readme.html</a>, <a href="../w/readme.md">readme.md</a>, <a href="../w/readme.txt">readme.txt…</a></p>',
@@ -68,7 +68,7 @@ app.get(/^\/w\/(.*)/, function(page, model, params, next){
     var requestedDocument = model.query('documents', {'_id' : slug});
     requestedDocument.subscribe(function(err) {
         if (err) return next(err); // this throws a 500
-        if (text.get().length === 0) {
+        if (requestedDocument.get().length === 0) {
             // Create a new document
             model.add('documents', {
                 id : slug,

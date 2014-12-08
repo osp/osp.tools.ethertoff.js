@@ -1,3 +1,27 @@
+@font-face {
+    font-family: Crickx;
+    src: url(../uploads/crickxsharkcut-webfont.ttf);
+}
+
+@font-face {
+    font-family: HerscheyFutura;
+    src: url(../uploads/herscheyfutura-webfont.ttf);
+}
+
+@font-face {
+    font-family: UniversElse;
+    src: url(../uploads/universelse-regular-webfont.ttf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: UniversElse;
+    src: url(../uploads/universelse-light-webfont.ttf);
+    font-weight: 200;
+}
+
+
+
 /* UI */
 
 .CodeMirror {
@@ -19,7 +43,8 @@
 body {
     background: #fff;
     color: green;
-    font-family: "Univers Light";
+    font-family: "UniversElse";
+    font-weight: 200;
     font-size: 16px;
     line-height: 1.5em;
     padding: 0.5em;
@@ -54,7 +79,7 @@ blockquote {
 blockquote div {
     font-family: patin, serif;
 }
-p {
+p, pre, ul, ol, blockquote {
     margin-bottom: 1.5em;
 }
 
@@ -78,21 +103,17 @@ h1 {
     position: relative;
     z-index: 20;
     line-height: 2em;
-    font-weight: normal;
-    font-family: "HerscheyFutura", sans-serif;
     margin-bottom: 12px;
 }
 h2 {
-    font-family: "HerscheyFutura", sans-serif;
     font-size: 1em;
     line-height: 1.5em;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 9px;
 }
-h3, h4, h5, h6 {
-    font-weight: normal;
-    font-family: Univers, sans-serif;
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 200;
 }
 h3 {
     margin-top: 0px;
@@ -268,4 +289,3 @@ div#switch a.active {
         display: none;
     }
 }
-

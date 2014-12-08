@@ -1,16 +1,16 @@
 <index:>
-    {{if !_page.text.binary }}
-        {{if _page.text.mime === 'text/x-markdown'}}
-            <view name="d-showdown" text="{{_page.text.text}}" html="{{_page.markdown}}" options="{{ {} }}"></view>
+    {{if !_page.document.binary }}
+        {{if _page.document.mime === 'text/x-markdown'}}
+            <view name="d-showdown" text="{{_page.document.text}}" html="{{_page.markdown}}" options="{{ {} }}"></view>
             <div as="md"></div>
             {{markdown(_page.markdown)}}
-        {{else if _page.text.mime === 'text/html'}}
-            {{unescaped _page.text.text}}
+        {{else if _page.document.mime === 'text/html'}}
+            {{unescaped _page.document.text}}
         {{else}}
-            <pre>{{_page.text.text}}</pre>
+            <pre>{{_page.document.text}}</pre>
         {{/if}}
     {{else}}
-        {{if _page.text.mime === 'image/jpeg' || _page.text.mime === 'image/png' || _page.text.mime === 'image/gif' }}
+        {{if _page.document.mime === 'image/jpeg' || _page.document.mime === 'image/png' || _page.document.mime === 'image/gif' }}
         <img src="/raw/{{ _page.slug }}" />
         {{else}}
         Download binary file: <a href="/raw/{{ _page.slug }}">{{ _page.slug }}</a>

@@ -25,9 +25,10 @@
         <div class="right-side screen-only">
              <h2>{{ _page.document.path }}</h2>
 
-            <ul>
-                <li>{{ _page.document.mime }}</li>
-            </ul>
+            <dl>
+                <dt>Mimetype</dt>
+                <dd>{{ _page.document.mime }}</dd>
+            </dl>
         </div>
     </div>
 
@@ -49,9 +50,9 @@
 
 <nav:>
     <nav>
-        <dl>
+        <ul>
             {{each _page.allDocuments as #document}}
-            <dd><a href="/{{if _page.readMode }}r{{/if}}{{if _page.writeMode }}w{{/if}}/{{#document.id}}">{{#document.id}}</a></dd>
+            <li><a href="/{{if _page.readMode }}r{{/if}}{{if _page.writeMode }}w{{/if}}/{{#document.id}}">{{#document.id}}</a></li>
             {{/each}}
-        </dl>
+        </ul>
     </nav>

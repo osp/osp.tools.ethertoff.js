@@ -52,7 +52,7 @@
     <nav>
         <ul>
             {{each _page.allDocuments as #document}}
-            <li><a href="/{{if _page.readMode }}r{{/if}}{{if _page.writeMode }}w{{/if}}/{{#document.id}}">{{#document.id}}</a></li>
+            <li><a href="/{{if _page.readMode }}r{{/if}}{{if _page.writeMode }}w{{/if}}/{{#document.path}}">{{#document.path}}</a></li>
             {{/each}}
         </ul>
     </nav>

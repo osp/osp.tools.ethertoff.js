@@ -5,7 +5,7 @@ This script recursively walks through a folder and adds each file to Ethertoffâ€
 Binary files are not actually stored:
 
 {
-"_id" : "geo.pyc",
+"_id" : "1cef0b09-c1b5-41b2-8d5c-45711be62aac",
 "absPath" : "/Users/e/Documents/Titanium_Studio_Workspace/raduga-server/geo.pyc",
 "path" : "geo.pyc",
 "mime" : "application/octet-stream",
@@ -15,7 +15,7 @@ Binary files are not actually stored:
 Text-based files get the data stored in the mongo database directly:
 
 {
-"_id" : "alerts.py",
+"_id" : "57bab03c-b703-4524-a122-4331283ce73e",
 "absPath" : "/Users/e/Documents/Titanium_Studio_Workspace/raduga-server/alerts.py",
 "path" : "alerts.py",
 "mime" : "text/x-python",
@@ -36,6 +36,7 @@ var mmm = require('mmmagic'),
 var textExtensions = require('istextorbinary/node_modules/textextensions');
 var binaryExtensions = require('istextorbinary/node_modules/binaryextensions');
 var dive = require('dive');
+var uuid = require('uuid').v4;
 
 // local
 var defaults = require('./config/defaults');
@@ -101,9 +102,9 @@ db.mongo.dropCollection(process.env.COLLECTION_NAME, function(err, reply) {
           if (err) throw err;
           toDo += 1;
           var doc = {};
+          doc._id = uuid();
           doc.absPath = file;
           doc.path = path.relative(folder, file);
-          doc._id = doc.path;
           doc.mime = mime.lookup(file);
           var extension = path.extname(file).replace('.','');
           if (binaryExtensions.indexOf(extension) >= 0) {

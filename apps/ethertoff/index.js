@@ -17,7 +17,7 @@ app.component(require('d-showdown'));
 app.get('/', function(page, model, params, next){
     var slug;
     // try to find a document that can resemble the home-page
-    var requestedDocument = model.query('documents', {'_id': { $regex: '^readme*|^index*', $options: 'i' } });
+    var requestedDocument = model.query('documents', {'path': { $regex: '^readme*|^index*', $options: 'i' } });
 
     requestedDocument.subscribe(function(err) {
         if (err) return next(err);
@@ -46,7 +46,7 @@ app.get('/', function(page, model, params, next){
 
 app.get(/^\/r\/(.*)/, function(page, model, params, next){
     var slug = params[0];
-    var requestedDocument = model.query('documents', {'_id' : slug});
+    var requestedDocument = model.query('documents', {'path' : slug});
 
     requestedDocument.subscribe(function(err) {
         if (err) return next(err);
@@ -65,13 +65,12 @@ app.get(/^\/r\/(.*)/, function(page, model, params, next){
 
 app.get(/^\/w\/(.*)/, function(page, model, params, next){
     var slug = params[0];
-    var requestedDocument = model.query('documents', {'_id' : slug});
+    var requestedDocument = model.query('documents', {'path' : slug});
     requestedDocument.subscribe(function(err) {
         if (err) return next(err); // this throws a 500
         if (requestedDocument.get().length === 0) {
             // Create a new document
             model.add('documents', {
-                id : slug,
                 path : slug,
                 text : "Foo Foo Foo",
                 mime : mime.lookup(slug) || 'text/plain',

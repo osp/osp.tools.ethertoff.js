@@ -9,7 +9,7 @@ router.get(/^\/raw\/(.*)/, function(req, res, next){
     // and fetching on the model
     
     var model = req.getModel();
-    var c = model.query('documents', {'_id' : slug});
+    var c = model.query('documents', {'path' : slug});
     c.fetch(function(err) {
         var r = c.get();
         if (r.length > 0) {
@@ -20,7 +20,7 @@ router.get(/^\/raw\/(.*)/, function(req, res, next){
             } else {                // binary files are not stored in the
                                     // database but saved on disk
                                     // it looks like this is camelCased `sendFile` in more recent versions
-                res.sendfile(doc.absPath); 
+                res.sendfile(doc.absPath);
             }
         } else {
             next();
@@ -31,7 +31,7 @@ router.get(/^\/raw\/(.*)/, function(req, res, next){
 router.get('/style.css', function(req, res, next){
     
     var model = req.getModel();
-    var c = model.query('documents', {'_id' : 'style.css'});
+    var c = model.query('documents', {'path' : 'style.css'});
     c.fetch(function(err) {
         var r = c.get();
         if (r.length > 0) {

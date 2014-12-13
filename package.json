@@ -27,7 +27,8 @@
     "d-showdown": "~0.1.0",
     "dive": "~0.3.0",
     "mmmagic": "~0.3.8",
-    "istextorbinary": "^1.0.0"
+    "istextorbinary": "^1.0.0",
+    "uuid": "^2.0.1"
   },
   "author": {
     "name": "Eric Schrijver",

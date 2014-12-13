@@ -15,4 +15,4 @@ module.exports = function (err, req, res, next) {
 
   var page = errorApp.createPage(req, res, next);
   page.renderStatic(status, status.toString());
-}
+};

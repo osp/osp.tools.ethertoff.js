@@ -20,24 +20,29 @@ app.get('/', function(page, model, params, next){
     var requestedDocument = model.query('documents', {'path': { $regex: '^readme*|^index*', $options: 'i' } });
 
     requestedDocument.subscribe(function(err) {
-        if (err) return next(err);
+        if (err) return next(err); // 500
         if (requestedDocument.get().length === 0) {
-            model.set('_page.document', {
-                path : 'index.html',
+            // Create a new home-page if none exists
+            slug = 'index.html';
+            model.add('documents', {
+                path : slug,
                 text : '<p>You can set a home page by creating a page called <a href="../w/index.html">index.html</a>, <a href="../w/index.md">index.md, <a href="../w/index.txt">index.txt</a>, <a href="../w/readme.html">readme.html</a>, <a href="../w/readme.md">readme.md</a>, <a href="../w/readme.txt">readme.txt…</a></p>',
                 mime : 'text/html',
                 binary : false
             });
         } else {
             slug = requestedDocument.get()[0].path;
-            model.ref('_page.documents', requestedDocument);  // requestedDocument is actually an array of one,
-            model.ref('_page.document', '_page.documents.0'); // so these two lines make us able to reference the actual document in the view  (thanks https://groups.google.com/d/msg/derbyjs/2eyBuDYCBw4/Ht8-Mr-Z7lwJ Artur Zayats )
         }
+
+        model.set('_page.slug', slug);
+        model.set('_page.readMode', true);
+
         var allDocuments = model.query('documents', {});
         allDocuments.subscribe(function(err) {
             if (err) return next(err);
-            model.set('_page.slug', slug);
-            model.set('_page.readMode', true);
+            model.ref('_page.documents', requestedDocument);   // requestedDocument is actually an array of one,
+            model.ref('_page.document', '_page.documents.0');  // so these two lines make us able to reference the actual document in the view
+                                                               // (thanks https://groups.google.com/d/msg/derbyjs/2eyBuDYCBw4/Ht8-Mr-Z7lwJ Artur Zayats )
             allDocuments.ref('_page.allDocuments');
             page.render("read");
         });
@@ -48,16 +53,18 @@ app.get(/^\/r\/(.*)/, function(page, model, params, next){
     var slug = params[0];
     var requestedDocument = model.query('documents', {'path' : slug});
 
+    model.set('_page.slug', slug);
+    model.set('_page.readMode', true);
+
     requestedDocument.subscribe(function(err) {
         if (err) return next(err); // 500
         if (requestedDocument.get().length === 0) {
             next(); // 404
         };
+
         var allDocuments = model.query('documents', {});
         allDocuments.subscribe(function(err) {
             if (err) return next(err);
-            model.set('_page.slug', slug);
-            model.set('_page.readMode', true);
             model.ref('_page.documents', requestedDocument);
             model.ref('_page.document', '_page.documents.0');
             allDocuments.ref('_page.allDocuments');
@@ -69,10 +76,14 @@ app.get(/^\/r\/(.*)/, function(page, model, params, next){
 app.get(/^\/w\/(.*)/, function(page, model, params, next){
     var slug = params[0];
     var requestedDocument = model.query('documents', {'path' : slug});
+
+    model.set('_page.slug', slug);
+    model.set('_page.writeMode', true);
+
     requestedDocument.subscribe(function(err) {
-        if (err) return next(err); // this throws a 500
+        if (err) return next(err); // 500
         if (requestedDocument.get().length === 0) {
-            // Create a new document
+            // Create a new document if none exists
             model.add('documents', {
                 path : slug,
                 text : "Foo Foo Foo",
@@ -80,11 +91,10 @@ app.get(/^\/w\/(.*)/, function(page, model, params, next){
                 binary : false // this is not necessary true; if a user creates foo.png, what should happen?
             });
         }
+
         var allDocuments = model.query('documents', {});
         allDocuments.subscribe(function(err) {
             if (err) return next(err);
-            model.set('_page.slug', slug);
-            model.set('_page.writeMode', true);
             model.ref('_page.documents', requestedDocument);
             model.ref('_page.document', '_page.documents.0');
             allDocuments.ref('_page.allDocuments');

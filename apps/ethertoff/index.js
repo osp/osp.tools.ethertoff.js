@@ -49,7 +49,10 @@ app.get(/^\/r\/(.*)/, function(page, model, params, next){
     var requestedDocument = model.query('documents', {'path' : slug});
 
     requestedDocument.subscribe(function(err) {
-        if (err) return next(err);
+        if (err) return next(err); // 500
+        if (requestedDocument.get().length === 0) {
+            next(); // 404
+        };
         var allDocuments = model.query('documents', {});
         allDocuments.subscribe(function(err) {
             if (err) return next(err);
@@ -80,7 +83,6 @@ app.get(/^\/w\/(.*)/, function(page, model, params, next){
         var allDocuments = model.query('documents', {});
         allDocuments.subscribe(function(err) {
             if (err) return next(err);
-            //console.log(allDocuments.get());
             model.set('_page.slug', slug);
             model.set('_page.writeMode', true);
             model.ref('_page.documents', requestedDocument);
@@ -92,6 +94,6 @@ app.get(/^\/w\/(.*)/, function(page, model, params, next){
 });
 
 app.proto.markdown = function(html) {
-  if(!this.md) return;
-  this.md.innerHTML = html;
+    if(!this.md) return;
+    this.md.innerHTML = html;
 };

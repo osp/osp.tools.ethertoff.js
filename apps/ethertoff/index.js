@@ -37,7 +37,7 @@ app.get('/', function(page, model, params, next){
         model.set('_page.slug', slug);
         model.set('_page.readMode', true);
 
-        var allDocuments = model.query('documents', {});
+        var allDocuments = model.query('paths', {});
         allDocuments.subscribe(function(err) {
             if (err) return next(err);
             model.ref('_page.documents', requestedDocument);   // requestedDocument is actually an array of one,

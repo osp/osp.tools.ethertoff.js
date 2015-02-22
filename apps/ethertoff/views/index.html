@@ -6,6 +6,7 @@
     <view name="d-showdown:includes" static='/showdown'></view>
     <link rel="stylesheet/less" href="/style.css" >
     <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.1.0/less.min.js"></script>
+    {{if _page.readMode || _page.writeMode }}<base href="/raw/" />{{/if}}
 
 <Title:>
   Ethertoff: {{if _page.writeMode }}writing {{/if}}{{_page.document.path}}

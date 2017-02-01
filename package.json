@@ -2,6 +2,7 @@
   "name": "ethertoff",
   "version": "0.0.0",
   "description": "Simple wiki featuring realtime editing, outputs with equal love to print and web.",
+  "engines": { "node" : "~0.12.8" },
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
@@ -26,7 +27,7 @@
     "d-codemirror": "~0.2.0",
     "d-showdown": "~0.1.0",
     "dive": "~0.3.0",
-    "mmmagic": "~0.3.8",
+    "mmmagic": "~0.4.5",
     "istextorbinary": "^1.0.0",
     "uuid": "^2.0.1"
   },

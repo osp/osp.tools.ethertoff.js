@@ -50,6 +50,10 @@ app.get('/', function(page, model, params, next){
 });
 
 app.get(/^\/r\/(.*)/, function(page, model, params, next){
+    /**
+     * The READ view should update in real time when the document is changed,
+     * but not allow to change directly the document.
+     * */
     var slug = params[0];
     var requestedDocument = model.query('documents', {'path' : slug});
 
@@ -74,6 +78,9 @@ app.get(/^\/r\/(.*)/, function(page, model, params, next){
 });
 
 app.get(/^\/w\/(.*)/, function(page, model, params, next){
+    /**
+     * The WRITE view should allow to collaboratively edit the document.
+     */
     var slug = params[0];
     var requestedDocument = model.query('documents', {'path' : slug});
 

@@ -1,7 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
+/**
+ * These views are handled serverside, by express — they don’t need to update in realtime.
+ */
+
 router.get(/^\/raw\/(.*)/, function(req, res, next){
+    /**
+     * The RAW view (/raw/document.name) returns the current state of the document as an HTTP response */
+
     var slug = req.params[0];
     
     // .getModel() is the glue between derby and express
@@ -29,6 +36,11 @@ router.get(/^\/raw\/(.*)/, function(req, res, next){
 });
 
 router.get('/style.css', function(req, res, next){
+    /**
+     * This is something of a hack, for if we want to edit the site’s styles in realtime:
+     * if there is a document called style.css in the database we will use this instead of the style.css available
+     * as a static file.
+     */
     
     var model = req.getModel();
     var c = model.query('documents', {'path' : 'style.css'});
@@ -39,7 +51,7 @@ router.get('/style.css', function(req, res, next){
                 res.set('Content-Type', doc.mime);
                 res.send(doc.text);
         } else {
-            next();
+            next(); // fallback to static
         }
     });
 });
